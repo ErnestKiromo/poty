@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Web Designer and Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="shortcut icon" href="./modified_urp_logo.png" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Heebo', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #000000;
+            font-weight: 400;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Enhanced Navbar Animation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out, background-color 0.3s;
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            transform: translateY(-100%);
+        }
+
+        .navbar.visible {
+            transform: translateY(0);
+        }
+
+        /* Text Reveal Animation */
+        .reveal-text {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reveal-text::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #745d01;
+            transform: translateX(-100%);
+            animation: reveal 1.5s ease forwards;
+        }
+
+        @keyframes reveal {
+            0% { transform: translateX(-100%); }
+            50% { transform: translateX(0); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Card Hover Effects */
+        .work-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .work-card.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .work-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Parallax Effect */
+        .hero-image {
+            transform: translateZ(0);
+            transition: transform 0.3s ease-out;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .hero-image img {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Button Hover Effect */
+        .email-btn {
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s ease;
+        }
+
+        .email-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .email-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        /* Social Icons Animation */
+        .social-links a {
+            transition: transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        /* Skills Tags Animation */
+        .tag {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Scroll Progress Indicator */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: #745d01;
+            z-index: 1001;
+            transition: width 0.1s ease;
+        }
+
+        /* Loading Animation */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .loader-content {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #745d01;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+        <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Heebo', sans-serif;
+        }
+
+        body {
+            line-height: 1.6;
+            color: #000000;
+            font-weight: 400;
+            background-image: url('./body_bg.jpg');
+            position: relative;
+            overflow-x: hidden; /* Prevent horizontal scrolling issues */
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: sticky;
+            top: 0; /* Stick to the top of the page */
+            width: 100%;
+            background: white;
+             backdrop-filter: blur(10px); 
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+        .nav-links2 {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .nav-links2 a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .email-btn {
+            background: #000;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 60px;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Works Section */
+        .works {
+            padding: 50px 0;
+            background: rgba(249, 249, 249, 0.5);
+            backdrop-filter: blur(10px); 
+        }
+
+
+        .works-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+        }
+
+        .work-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 500ms ease-in-out, box-shadow 500ms ease-in-out; /* Add box-shadow transition for smoother effect */
+        }
+
+        .work-card:hover {
+            transform: scale(1.1); /* Slightly increase the size */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Increase shadow for emphasis */
+        }
+
+        .work-card img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .work-card-content {
+            padding: 1.5rem;
+        }
+
+        .work-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        .tags {
+            /**display: flex;**/
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            text-align: center;
+        }
+
+        .contact h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero {
+                padding: 30px 0 60px;
+                min-height: 80vh;
+                display: flex;
+                align-items: center;
+            }
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+        }
+    </style>
+    <style>
+    .hero-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .hero-text {
+        max-width: 600px;
+        text-align: left;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .hero-text p {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+
+    .email-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #745d01;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+
+    .hero-image img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 15px;
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .social-links {
+        margin-top: 20px;
+    }
+
+    .social-links a {
+        margin: 0 10px;
+        display: inline-block;
+        font-size: 2rem;
+        color: #333;
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    .social-links a:hover {
+        color: #007bff;
+        transform: scale(1.1);
+    }
+
+    .social-links img {
+        width: 36px;
+        height: 36px;
+        transition: transform 0.3s;
+        padding-top: 10px;
+    }
+
+    .social-links img:hover {
+        transform: scale(1.1);
+    }
+
+    .footer{
+        position: fixed;
+        bottom: 0;
+        z-index: 1000;
+        background: white;
+        align-items: center;
+        width: 100%;
+        backdrop-filter: blur(10px); 
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+        background-color: #171717;
+        background-image: url('./inverted_body_bg.jpg');
+        color: #f0f0f0;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover; /* Ensures the background image covers the whole screen */
+    }
+    body.dark-mode button {
+        background-color: #ff5722;
+    }
+
+    body.dark-mode button:hover {
+        background-color: #e64a19;
+    }
+    body.dark-mode .navbar{
+        color: white;
+        background: #000;
+    }
+    body.dark-mode  .nav-links a{
+        color: white;
+    }
+    body.dark-mode  .nav-links2 a{
+        color: white;
+    }
+    /*body.dark-mode .hero-text {
+        background-color: rgba(0, 0, 0, 0.8); 
+        backdrop-filter: blur(10px); 
+        color: white;
+        border-radius: 10px; 
+        transition: background-color 0.3s, color 0.3s; 
+    }*/
+    body.dark-mode .logo {
+        background-color: rgba(255, 255, 255, 0.8); /* Add opacity for better effect with blur */
+        backdrop-filter: blur(10px); /* Apply blur to the background */
+        transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+    }
+     body.dark-mode .work-card{
+        background: #000;
+    }
+    body.dark-mode .tag{
+        background: #333;
+    }
+    body.dark-mode .footer{
+        background: #000;
+    }
+
+    #dark-mode-toggle{
+        height: 30px;
+        width: 50px;
+        background: black;
+        border-radius: 50px;
+        position: relative;
+    }
+    .ball{
+        height: 26px;
+        width: 26px;
+        background: white;
+        border-radius: 50%;
+        margin: 2px;
+        position: absolute;
+        right: 0;
+    }
+    body.dark-mode #dark-mode-toggle{
+        background: white;
+    }
+    body.dark-mode .ball{
+        background: black;
+        left: 0;
+    }
+    body.dark-mode .works{
+        background: rgba(0, 0, 0, 0.5);
+    }
+    body.dark-mode .social-links a {
+        color: white;
+    }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-content"></div>
+    </div>
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress"></div>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div style="display: flex; align-items: center;">
+                <img class="logo" src="./transparent_urp_logo.png" alt="Urp" height="49px">
+                <div style="width: 20px;"></div>
+                <div class="nav-links">
+                    <a href="#hello">Hello</a>
+                    <a href="#work">Work</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+            <!-- <a href="mailto:example@email.com" class="email-btn">Email me</a> -->
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span><i class="fa-solid fa-moon"></i></span>
+                <div id="dark-mode-toggle"><div class="ball"></div></div>
+                <span><i class="fa-solid fa-sun"></i></span>
+            </div>
+
+            <script>
+                const toggleButton = document.getElementById('dark-mode-toggle');
+
+                // Check if dark mode was previously enabled
+                if (localStorage.getItem('darkMode') === 'enabled') {
+                    document.body.classList.add('dark-mode');
+                }
+
+                // Add event listener to toggle dark mode
+                toggleButton.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    
+                    // Save the user's preference in localStorage
+                    if (document.body.classList.contains('dark-mode')) {
+                        localStorage.setItem('darkMode', 'enabled');
+                    } else {
+                        localStorage.removeItem('darkMode');
+                    }
+                });
+            </script>
+        </div>
+    </nav>
+
+    <section id="hello" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text" data-aos="fade-up">
+                    <h1>Hello.<br>I'm Ernest.</h1>
+                    <p>👨‍💻 Software Engineer | Full Stack Developer | DevOps | AI/ML Developer</p>
+                    <p>
+                        <b>🌟 About Me:</b> <br>
+                        I am a dedicated Computer Scientist with a passion for software engineering and full-stack development. With a solid foundation in JavaScript, Python, PHP, and various frameworks including Laravel, FastAPI, React, Vue.js, and Node.js, I bring versatility to every project I undertake. My experience extends to CodeIgniter, where I've delivered robust solutions that meet client requirements efficiently.
+                    </p>
+                    <a href="mailto:example@email.com" class="email-btn">Get in touch</a>
+                </div>
+                <div class="hero-image" data-aos="fade-up">
+                    <img src="./2-removebg.png" alt="Profile photo">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="works">
+        <div class="container">
+            <div class="works-header">
+                <h2 style=" font-size: 2rem; font-weight: 700; margin-bottom: 1rem;">Some of my Works.</h2>
+            </div>
+            <div class="works-grid">
+                <div class="work-card">
+                    <img src="./smartpulse.png" alt="Project 1">
+                    <div class="work-card-content">
+                        <h3>SmartPulse Innovation</h3>
+                        <div class="tags">
+                            <span class="tag">Web App Design</span>
+                            <span class="tag">FullStack Development(Laravel)</span>
+                            <span class="tag">Web Hosting</span>
+                        </div>
+                        <a href="#" class="email-btn">See Project</a>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img src="./urp.png" alt="Project 1">
+                    <div class="work-card-content">
+                        <h3>Urp(New)</h3>
+                        <div class="tags">
+                            <span class="tag">Web App Design</span>
+                            <span class="tag">FullStack Development(Laravel)</span>
+                            <span class="tag">Web Hosting</span>
+                        </div>
+                        <a href="#" class="email-btn">See Project</a>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img src="./urp_d.png" alt="Project 1">
+                    <div class="work-card-content">
+                        <h3>Urp(new)</h3>
+                        <div class="tags">
+                            <span class="tag">Web App Design</span>
+                            <span class="tag">FullStack Development(Laravel)</span>
+                            <span class="tag">Web Hosting</span>
+                        </div>
+                        <a href="#" class="email-btn">See Project</a>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img src="./adetech.png" alt="Project 1">
+                    <div class="work-card-content">
+                        <h3>Adetech Resolute</h3>
+                        <div class="tags">
+                            <span class="tag">Web App Design</span>
+                            <span class="tag">FullStack Development(Laravel)</span>
+                            <span class="tag">Web Hosting</span>
+                        </div>
+                        <a href="#" class="email-btn">See Project</a>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img src="./spoofix.png" alt="Project 1">
+                    <div class="work-card-content">
+                        <h3>Spoofix AI</h3>
+                        <div class="tags">
+                            <span class="tag">Web App Design</span>
+                            <span class="tag">FullStack Development(Laravel + Vue.js)</span>
+                            <span class="tag">Web Hosting</span>
+                        </div>
+                        <a href="#" class="email-btn">See Project</a>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img src="./urp_old.png" alt="Project 1">
+                    <div class="work-card-content">
+                        <h3>Urp(old)</h3>
+                        <div class="tags">
+                            <span class="tag">Web App Design</span>
+                            <span class="tag">FullStack Development(FastAPI)</span>
+                            <span class="tag">Web Hosting</span>
+                        </div>
+                        <a href="#" class="email-btn">See Project</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact">
+        <div class="container" data-aos="fade-up" duration="1000" style="text-align: left;">
+            <h2 style="text-align: center;">📈 More about Me</h2>
+            <p>
+                <b>💼 Skills:</b> <br>
+
+                Programming Languages: JavaScript, Python, PHP
+                Frameworks: Laravel, FastAPI, React, Vue.js, Node.js, CodeIgniter
+                Front-End Development: HTML, CSS, Tailwind CSS, Bootstrap
+                Responsive Design: Expertise in creating responsive and visually appealing web interfaces <br><br>
+
+                <b>🚀 Why Choose Me:</b> <br>
+                I excel in both front-end and back-end development, crafting user-friendly interfaces with HTML, CSS, and implementing responsive design principles using Tailwind CSS and Bootstrap. Additionally, my proficiency in backend technologies and frameworks such as Laravel, FastAPI, Node.js, and CodeIgniter enables me to build scalable and efficient web applications that meet your business needs. With a keen eye for detail and a commitment to delivering high-quality work, I ensure client satisfaction on every project. <br><br>
+
+                <b>📈 Let's Collaborate:</b> <br>
+                If you're looking for a skilled Software Engineer who can bring your vision to life with cutting-edge technologies and best practices, I'm here to help. Let's discuss your project requirements and create impactful solutions together. <br><br>
+            </p>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Let's work together</h2>
+            <p>If you need a modern and powerful website for your business,<br>startup or yourself, I am available for work.</p><br>
+            <a href="mailto:example@email.com" class="email-btn">Email me</a>
+            <div class="social-links">
+                <a data-aos="fade-up-left" duration="1000" href="#"><img src="./upwork-svgrepo-com.svg" alt=""></a>
+                <a data-aos="fade-up" duration="500" href="#"><i class="fab fa-linkedin"></i></a>
+                <a data-aos="fade-up-right" duration="1000" href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </section>
+    <div class="footer">
+        <div class="nav-links2" style="margin: auto; width: 200px; font-weight: 600;">
+            <a href="#hello">Hello</a>
+            <a href="#work">Work</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loader = document.querySelector('.loader');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const scrollPx = document.documentElement.scrollTop;
+            const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = `${scrollPx / winHeightPx * 100}%`;
+            scrollProgress.style.width = scrolled;
+        });
+
+        // Navbar Scroll Behavior
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+                navbar.classList.add('visible');
+            }
+            lastScroll = currentScroll;
+        });
+
+        // Work Cards Animation
+        const observeCards = () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('animate');
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.work-card').forEach(card => {
+                observer.observe(card);
+            });
+        };
+
+        // Parallax Effect
+        document.addEventListener('mousemove', (e) => {
+            const hero = document.querySelector('.hero-image');
+            const mouseX = e.clientX / window.innerWidth - 0.5;
+            const mouseY = e.clientY / window.innerHeight - 0.5;
+            
+            if (hero) {
+                hero.style.transform = `translate(${mouseX * 30}px, ${mouseY * 30}px)`;
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            observeCards();
+        });
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+    </script>
+</body>
+</html>
